@@ -30,7 +30,7 @@
                 </a>
 
                 <!-- item-->
-                <a href="/locale/en" class="dropdown-item notify-item" data-language="en">
+                <a href="/locale/gb" class="dropdown-item notify-item" data-language="en">
                     <img src="{{ asset('assets/flags/4x3/gb.svg') }}" alt="user-image" class="me-1" height="12">
                     <span class="align-middle">@lang('header.english')</span>
                 </a>

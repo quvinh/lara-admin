@@ -17,7 +17,7 @@
         <!-- start page title -->
         {{ Breadcrumbs::render('dashboard') }}
         <!-- end page title -->
-        {{Auth::guard('admin')->check()}}
+        {{Auth::check()}}
         <div>
             <canvas id="myChart"></canvas>
         </div>
@@ -32,7 +32,7 @@
     <script src="{{ asset('admins/js/app.min.js') }}"></script>
     <script>
         const ctx = document.getElementById('myChart');
-      
+
         new Chart(ctx, {
           type: 'bar',
           data: {

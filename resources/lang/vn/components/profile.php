@@ -1,0 +1,27 @@
+<?php
+return [
+    'myaccount' => 'Tài khoản của tôi',
+    'changepassword' => 'Đổi mật khẩu',
+    'accountinfo' => 'THÔNG TIN TÀI KHOẢN',
+    'passwordinfo' => 'ĐỔI MẬT KHẨU',
+    'fullname' => 'Tên đầy đủ',
+    'address' => 'Địa chỉ',
+    'username' => 'Tên đăng nhập',
+    'email' => 'Email',
+    'mobile' => 'Số điện thoại',
+    'avatar' => 'Ảnh đại diện',
+    'birthday' => 'Ngày sinh',
+    'gender' => 'Giới tính',
+    'currentpass' => 'Mật khẩu hiện tại',
+    'newpass' => 'Mật khẩu mới',
+    'entername' => 'Nhập tên...',
+    'enteraddress' => 'Nhập địa chỉ...',
+    'enterusername' => 'Nhập tên đăng nhập...',
+    'enteremail' => 'Nhập email...',
+    'entermobile' => 'Nhập SĐT...',
+    'enterpass' => 'Nhập mật khẩu...',
+    'save' => 'Lưu',
+    'male' => 'Nam',
+    'female' => 'Nữ',
+];
+?>

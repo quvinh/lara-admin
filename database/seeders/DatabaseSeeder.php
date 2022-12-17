@@ -18,17 +18,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $admin = User::create([
-            'name' => 'Username',
-            'username' => 'user',
-            'email' => 'user@gmail.com',
-            'password' => bcrypt('user'),
+            'name' => 'Ngô Quang Vinh',
+            'username' => 'admin',
+            'email' => 'vinhhp2620@gmail.com',
+            'password' => bcrypt('admin'),
             'mobile' => '0962334135',
             'gender' => 1,
             'address' => 'Chiến Thắng, An Lão, Hải Phòng',
         ]);
-
-        // Reset cached roles and permissions
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Permission
         DB::table('permissions')->insert([
