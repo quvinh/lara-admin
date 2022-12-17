@@ -36,12 +36,26 @@ class DatabaseSeeder extends Seeder
             ['name' => 'acc.view', 'guard_name' => 'web'],
             ['name' => 'acc.confirm', 'guard_name' => 'web'],
 
+            // Role
+            ['name' => 'role.add', 'guard_name' => 'web'],
+            ['name' => 'role.edit', 'guard_name' => 'web'],
+            ['name' => 'role.delete', 'guard_name' => 'web'],
+            ['name' => 'role.view', 'guard_name' => 'web'],
+            ['name' => 'role.confirm', 'guard_name' => 'web'],
+
             // Invoice
             ['name' => 'inv.add', 'guard_name' => 'web'],
             ['name' => 'inv.edit', 'guard_name' => 'web'],
             ['name' => 'inv.delete', 'guard_name' => 'web'],
             ['name' => 'inv.view', 'guard_name' => 'web'],
             ['name' => 'inv.confirm', 'guard_name' => 'web'],
+
+            // Company
+            ['name' => 'com.add', 'guard_name' => 'web'],
+            ['name' => 'com.edit', 'guard_name' => 'web'],
+            ['name' => 'com.delete', 'guard_name' => 'web'],
+            ['name' => 'com.view', 'guard_name' => 'web'],
+            ['name' => 'com.confirm', 'guard_name' => 'web'],
 
             // Log system
             ['name' => 'log.delete', 'guard_name' => 'web'],

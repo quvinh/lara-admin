@@ -174,9 +174,9 @@ Thông tin tài khoản
                                                         <span class="password-eye"></span>
                                                     </div>
                                                 </div>
-                                                <input type="password" class="form-control" id="current-password"
+                                                <!-- <input type="password" class="form-control" id="current-password"
                                                     name="current_password" placeholder="@lang('components/profile.enterpass')"
-                                                    value="{{ old('password') ? old('password') : '' }}" required>
+                                                    value="{{ old('password') ? old('password') : '' }}" required> -->
                                             </div>
                                         </div> <!-- end col -->
                                         <div class="col-md-6">

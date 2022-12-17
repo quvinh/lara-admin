@@ -2,6 +2,7 @@
 return [
     'dashboard' => 'Bản tin',
     'calendar' => 'Lịch và sự kiện',
+    'company' => 'Công ty',
     'subcriber' => [
         'subcriber' => 'Người đăng ký',
         'mansubcriber' => 'Quản lý Người đăng ký',

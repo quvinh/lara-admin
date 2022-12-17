@@ -20,5 +20,11 @@ return [
         'create' => 'Tạo mẫu',
         'edit' => 'Sửa mẫu'
     ],
+    'company' => [
+        'company' => 'Công ty',
+        'create' => 'Tạo công ty',
+        'edit' => 'Sửa công ty',
+        'invoice' => 'HĐ-ĐT'
+    ],
 ];
 ?>

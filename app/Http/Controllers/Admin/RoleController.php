@@ -88,6 +88,8 @@ class RoleController extends Controller
         $groups = array(
             'inv' => Lang::get('components/role.invoice'),
             'acc' => Lang::get('components/role.account'),
+            'role' => Lang::get('components/role.role'),
+            'com' => Lang::get('components/role.company'),
             'log' => Lang::get('components/role.log'),
         );
         $role = Role::findById($id);

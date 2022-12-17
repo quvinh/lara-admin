@@ -44,6 +44,13 @@
                 </a>
             </li>
 
+            <li class="side-nav-item">
+                <a href="{{ route('admin.company') }}" class="side-nav-link">
+                    <i class="uil-building"></i>
+                    <span> @lang('leftside.company') </span>
+                </a>
+            </li>
+
             @can('acc.view')
                 <li class="side-nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarAccount" aria-expanded="false" aria-controls="sidebarAccount"

@@ -2,6 +2,7 @@
 return [
     'dashboard' => 'Dashboard',
     'calendar' => 'Calendar',
+    'company' => 'Company',
     'subcriber' => [
         'subcriber' => 'Subcriber',
         'mansubcriber' => 'Subcriber management',

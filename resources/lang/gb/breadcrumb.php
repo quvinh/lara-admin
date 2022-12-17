@@ -20,5 +20,11 @@ return [
         'create' => 'Create invoice',
         'edit' => 'Edit invoice'
     ],
+    'company' => [
+        'company' => 'Company',
+        'create' => 'Create company',
+        'edit' => 'Edit company',
+        'invoice' => 'Load invoice',
+    ],
 ];
 ?>

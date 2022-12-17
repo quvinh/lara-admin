@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\LogoutController;
 use App\Http\Controllers\Admin\CalendarController;
+use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\RoleController;
@@ -32,6 +33,7 @@ Route::group(['middleware' => ['auth']], function () {
     AccountController::Routes();
     RoleController::Routes();
     InvoiceController::Routes();
+    CompanyController::Routes();
 });
 
 Route::fallback(function () {

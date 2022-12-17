@@ -73,3 +73,27 @@ Breadcrumbs::for('invoiceedit', function (BreadcrumbTrail $trail, $id) {
     $trail->parent('invoice');
     $trail->push(Lang::get('breadcrumb.invoice.edit'), route('admin.invoice.edit', $id));
 });
+
+// Dashboard > Company
+Breadcrumbs::for('company', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push(Lang::get('breadcrumb.company.company'), route('admin.company'));
+});
+
+// Dashboard > Company > Create
+Breadcrumbs::for('companycreate', function (BreadcrumbTrail $trail) {
+    $trail->parent('company');
+    $trail->push(Lang::get('breadcrumb.company.create'), route('admin.company.create'));
+});
+
+// Dashboard > Company > Edit > [ID]
+Breadcrumbs::for('companyedit', function (BreadcrumbTrail $trail, $id) {
+    $trail->parent('company');
+    $trail->push(Lang::get('breadcrumb.company.edit'), route('admin.company.edit', $id));
+});
+
+// Dashboard > Company > Invoice > [ID]
+Breadcrumbs::for('companyinvoice', function (BreadcrumbTrail $trail, $id) {
+    $trail->parent('company');
+    $trail->push(Lang::get('breadcrumb.company.invoice'), route('admin.company.invoice', $id));
+});
