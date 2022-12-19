@@ -12,8 +12,8 @@ Tài khoản
 <link href="{{ asset('admins/css/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style">
 
 <!-- third party css -->
-<link href="{{ asset('admins/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('admins/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
 @endsection
 
 @section('content')
@@ -62,8 +62,8 @@ Tài khoản
                 <option value="today" {{ app('request')->input('period') == 'today' ? 'selected' : '' }}>Hôm nay</option>
                 <option value="week" {{ app('request')->input('period') == 'week' ? 'selected' : '' }}>Tuần này</option>
                 <option value="month" {{ app('request')->input('period') == 'month' ? 'selected' : '' }}>Tháng này</option>
-                <option value="quarter" {{ app('request')->input('period') == 'quarter' ? 'selected' : '' }}>Quý này</option>
-                <option value="year" {{ app('request')->input('period') == 'year' ? 'selected' : '' }}>Năm nay</option>
+                <option value="quarter" disabled {{ app('request')->input('period') == 'quarter' ? 'selected' : '' }}>Quý này</option>
+                <option value="year" disabled {{ app('request')->input('period') == 'year' ? 'selected' : '' }}>Năm nay</option>
             </select>
         </div>
         <div class="col-md-3">
@@ -90,7 +90,7 @@ Tài khoản
         </div>
         <div class="col-md-8">
             <div class="text-sm-end">
-                <button type="button" class="btn btn-success"><i class="mdi mdi-microsoft-excel"></i> Xuất file Excel</button>
+                <!--  -->
             </div>
         </div>
     </div>
@@ -100,36 +100,66 @@ Tài khoản
             <thead>
                 <tr>
                     <th>STT</th>
-                    <th>Số HĐ</th>
-                    <th>KH</th>
                     <th>Mẫu</th>
-                    <th>MST NBán</th>
-                    <th>Tên NBán</th>
-                    <th>MST NMua</th>
-                    <th>Tên NMua</th>
+                    <th>KH</th>
+                    <th>Số HĐ</th>
+                    <th>TChất HĐ</th>
+                    <th>Ngày tạo</th>
+                    <th>Ngày TNhận</th>
+                    <th>MST BBán</th>
+                    <th>Tên BBán</th>
+                    <th>ĐC BBán</th>
+                    <th>MST BMua</th>
+                    <th>Tên BMua</th>
+                    <th>ĐC BMua</th>
+                    <th>Tính chất</th>
                     <th>Mặt hàng</th>
+                    <th>HTTT</th>
                     <th>ĐVT</th>
                     <th>SL</th>
                     <th>ĐGiá</th>
                     <th>Thành tiền</th>
+                    <th>Tiền CK</th>
+                    <th>ThTiền sau CK</th>
+                    <th>ThSuất</th>
+                    <th>Tiền VAT</th>
+                    <th>Thành tiền gồm VAT</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($invoices as $key => $invoice)
+                @php
+                    $ttsckhau = floatval($invoice['thtien']);
+                    $ttcckhau = floatval($invoice['stckhau']) + $ttsckhau;
+                    $tthue = number_format(floatval($invoice['tsuat']) * $ttsckhau, 2, '.', '');
+                    $ttien = $ttsckhau + floatval($tthue);
+                @endphp
                 <tr>
                     <td><b>{{ $key + 1 }}</b></td>
-                    <td><b class="text-{{ $invoice['ten'] == '' ? 'danger' : 'primary' }}">{{ $invoice['shdon'] }}</b></td>
-                    <td>{{ $invoice['khhdon'] }}</td>
                     <td>{{ $invoice['khmshdon'] }}</td>
+                    <td>{{ $invoice['khhdon'] }}</td>
+                    <td><b class="text-{{ $invoice['ten'] == '' ? 'danger' : 'primary' }}">{{ $invoice['shdon'] }}</b></td>
+                    <td>{{ $invoice['tchathd'] }}</td>
+                    <td>{{ $invoice['ntao'] }}</td>
+                    <td>{{ $invoice['ntnhan'] }}</td>
                     <td>{{ $invoice['nbmst'] }}</td>
                     <td><small>{{ $invoice['nbten'] }}</small></td>
+                    <td><small>{{ $invoice['nbdchi'] }}</small></td>
                     <td>{{ $invoice['nmmst'] }}</td>
                     <td><small>{{ $invoice['nmten'] }}</small></td>
+                    <td><small>{{ $invoice['nmdchi'] }}</small></td>
+                    <td>{{ $invoice['tchat'] }}</td>
                     <td>{{ $invoice['ten'] }}</td>
+                    <td>{{ $invoice['htttoan'] }}</td>
                     <td>{{ $invoice['dvtinh'] }}</td>
                     <td>{{ $invoice['sluong'] }}</td>
                     <td>{{ $invoice['dgia'] }}</td>
-                    <td>{{ $invoice['thtien'] }}</td>
+                    <td>{{ $ttcckhau }}</td>
+                    <td>{{ $invoice['stckhau'] }}</td>
+                    <td>{{ $ttsckhau }}</td>
+                    <td>{{ $invoice['tsuat'] }}</td>
+                    <td>{{ $tthue }}</td>
+                    <td>{{ $ttien }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -142,61 +172,38 @@ Tài khoản
 @section('script')
 <script src="{{ asset('admins/js/vendor.min.js') }}"></script>
 <script src="{{ asset('admins/js/app.min.js') }}"></script>
-<script src="{{ asset('admins/js/vendor/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('admins/js/vendor/dataTables.bootstrap5.js') }}"></script>
-<script src="{{ asset('admins/js/vendor/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('admins/js/vendor/responsive.bootstrap5.min.js') }}"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
 <script>
     $(document).ready(function() {
         "use strict";
-        $("#invoices-datatable").DataTable({
+        var a = $("#invoices-datatable").DataTable({
+            dom: 'Bfrtip',
             scrollX: !0,
+            stateSave: !0,
+            lengthMenu: [
+                [50, 100, 200, -1],
+                ['50 rows', '100 rows', '200 rows', 'Show all'],
+            ],
+            buttons: [{
+                    extend: 'excel',
+                    text: 'Export Excel',
+                    title: `${$('#type').val() == 'sold' ? 'Bán ra' : 'Mua vào'}-{{ $company->name }} ${$('#start').val()} ${$('#end').val()}`
+                },
+                'pageLength'
+            ],
             language: {
                 paginate: {
                     previous: "<i class='mdi mdi-chevron-left'>",
                     next: "<i class='mdi mdi-chevron-right'>"
-                },
-                info: "Showing accounts _START_ to _END_ of _TOTAL_",
-                lengthMenu: 'Display <select class="form-select form-select-sm ms-1 me-1"><option value="50">50</option><option value="100">100</option><option value="200">200</option><option value="-1">All</option></select>'
+                }
             },
-            pageLength: 50,
-            columns: [{
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }, {
-                orderable: !0
-            }],
-            select: {
-                style: "multi"
-            },
-            // order: [
-            //     [1, "asc"]
-            // ],
-            drawCallback: function() {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded"), $(
-                    "#invoices-datatable_length label").addClass("form-label")
-            },
+            iDisplayLength: 50,
         });
 
         $('#period').on('change', function() {

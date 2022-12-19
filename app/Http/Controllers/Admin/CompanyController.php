@@ -145,7 +145,6 @@ class CompanyController extends Controller
 
     public function invoice(Request $request, $id)
     {
-        set_time_limit(0);
         $invoices = array();
         $company = Company::find($id);
         $type = $request->type;
@@ -154,59 +153,78 @@ class CompanyController extends Controller
         }
         try {
             if ($type) {
-                $url = 'https://hoadondientu.gdt.gov.vn:30000/query/invoices/' . $type; // purchase or sold
-                $params = array(
-                    'sort' => 'tdlap:desc,khmshdon:asc,shdon:desc',
-                    'size' => '15',
-                    'search' => 'tdlap=ge=' . date('d/m/Y', strtotime($request->start)) . 'T00:00:00;tdlap=le=' . date('d/m/Y', strtotime($request->end)) . 'T23:59:59;ttxly==5',
-                );
-                $authorization = 'Authorization: Bearer ' . $company->token;
-                $curl = curl_init($url);
-                curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0);
-                curl_setopt($curl, CURLOPT_TIMEOUT, 50);
-                curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
-                curl_setopt($curl, CURLOPT_URL, $url . '?' . http_build_query($params));
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                $res = curl_exec($curl);
-                $data = json_decode($res, true);
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => 'https://hoadondientu.gdt.gov.vn:30000/query/invoices/' . $type . '?sort=tdlap:desc,khmshdon:asc,shdon:desc&size=15&search=tdlap=ge=' . date('d/m/Y', strtotime($request->start)) . 'T00:00:00;tdlap=le=' . date('d/m/Y', strtotime($request->end)) . 'T23:59:59;ttxly==5',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'GET',
+                    CURLOPT_HTTPHEADER => array(
+                        'Authorization: Bearer ' . $company->token,
+                    ),
+                ));
+
+                $response = curl_exec($curl);
+                $data = json_decode($response, true);
                 curl_close($curl);
                 try {
                     foreach ($data['datas'] as $key => $value) {
-                        $nbmst = $type == 'sold' ? $value['nbmst'] : $value['nmmst'];
+                        $nbmst = $value['nbmst'];
                         $khhdon = $value['khhdon'];
                         $shdon = $value['shdon'];
                         $khmshdon = $value['khmshdon'];
-                        $url2 = 'https://hoadondientu.gdt.gov.vn:30000/query/invoices/detail';
-                        $params2 = array(
-                            'nbmst' => $nbmst,
-                            'khhdon' => $khhdon,
-                            'shdon' => $shdon,
-                            'khmshdon' => $khmshdon,
-                        );
-                        $curl2 = curl_init($url2);
-                        curl_setopt($curl2, CURLOPT_CONNECTTIMEOUT, 0);
-                        curl_setopt($curl2, CURLOPT_TIMEOUT, 50);
-                        curl_setopt($curl2, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
-                        curl_setopt($curl2, CURLOPT_URL, $url2 . '?' . http_build_query($params2));
-                        curl_setopt($curl2, CURLOPT_RETURNTRANSFER, true);
-                        $res2 = curl_exec($curl2);
-                        $data2 = json_decode($res2, true);
+
+                        $curl2 = curl_init();
+
+                        curl_setopt_array($curl2, array(
+                            CURLOPT_URL => 'https://hoadondientu.gdt.gov.vn:30000/query/invoices/detail?nbmst=' . $nbmst . '&khhdon=' . $khhdon . '&shdon=' . $shdon . '&khmshdon=' . $khmshdon,
+                            CURLOPT_RETURNTRANSFER => true,
+                            CURLOPT_ENCODING => '',
+                            CURLOPT_MAXREDIRS => 10,
+                            CURLOPT_TIMEOUT => 0,
+                            CURLOPT_FOLLOWLOCATION => true,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_CUSTOMREQUEST => 'GET',
+                            CURLOPT_HTTPHEADER => array(
+                                'Authorization: Bearer ' . $company->token,
+                            ),
+                        ));
+
+                        $response2 = curl_exec($curl2);
+                        $data2 = json_decode($response2, true);
                         curl_close($curl2);
+                        // dd('https://hoadondientu.gdt.gov.vn:30000/query/invoices/detail?nbmst=' . $nbmst . '&khhdon=' . $khhdon . '&shdon=' . $shdon . '&khmshdon=' . $khmshdon, $data2);
                         try {
                             foreach ($data2['hdhhdvu'] as $index => $item) {
                                 array_push($invoices, array(
                                     'shdon' => $value['shdon'],
                                     'khhdon' => $value['khhdon'],
                                     'khmshdon' => $value['khmshdon'],
+                                    'nbdchi' => $value['nbdchi'],
                                     'nbmst' => $value['nbmst'],
+                                    'htttoan' => $value['htttoan'],
                                     'nbten' => $value['nbten'],
                                     'nmmst' => $value['nmmst'],
+                                    'nmdchi' => $value['nmdchi'],
                                     'nmten' => $value['nmten'],
+                                    'ntao' => $value['ntao'],
+                                    'ntnhan' => $value['ntnhan'],
+                                    'tchathd' => $value['tchat'],
+                                    'tthai' => $value['tthai'],
+                                    'ttxly' => $value['ttxly'],
                                     'dgia' => $item['dgia'],
                                     'dvtinh' => $item['dvtinh'],
                                     'sluong' => $item['sluong'],
+                                    'stckhau' => $item['stckhau'] == null ? 0 : $item['stckhau'],
+                                    'tchat' => $item['tchat'],
                                     'ten' => $item['ten'],
                                     'thtien' => $item['thtien'],
+                                    'tsuat' => $item['tsuat'] == null ? 0 : $item['tsuat'],
                                 ));
                             }
                         } catch (\Throwable $th) {
@@ -214,15 +232,26 @@ class CompanyController extends Controller
                                 'shdon' => $value['shdon'],
                                 'khhdon' => $value['khhdon'],
                                 'khmshdon' => $value['khmshdon'],
+                                'nbdchi' => $value['nbdchi'],
                                 'nbmst' => $value['nbmst'],
                                 'nbten' => $value['nbten'],
+                                'htttoan' => $value['htttoan'],
+                                'nmdchi' => $value['nmdchi'],
                                 'nmmst' => $value['nmmst'],
                                 'nmten' => $value['nmten'],
+                                'ntao' => $value['ntao'],
+                                'ntnhan' => $value['ntnhan'],
+                                'tchathd' => $value['tchat'],
+                                'tthai' => $value['tthai'],
+                                'ttxly' => $value['ttxly'],
                                 'dgia' => '',
                                 'dvtinh' => '',
                                 'sluong' => '',
+                                'stckhau' => 0,
+                                'tchat' => '',
                                 'ten' => '',
                                 'thtien' => '',
+                                'tsuat' => 0,
                             ));
                         }
                     }
@@ -231,20 +260,31 @@ class CompanyController extends Controller
                         'shdon' => $value['shdon'],
                         'khhdon' => $value['khhdon'],
                         'khmshdon' => $value['khmshdon'],
+                        'nbdchi' => $value['nbdchi'],
                         'nbmst' => $value['nbmst'],
                         'nbten' => $value['nbten'],
+                        'htttoan' => $value['htttoan'],
+                        'nmdchi' => $value['nmdchi'],
                         'nmmst' => $value['nmmst'],
                         'nmten' => $value['nmten'],
+                        'ntao' => $value['ntao'],
+                        'ntnhan' => $value['ntnhan'],
+                        'tchathd' => $value['tchat'],
+                        'tthai' => $value['tthai'],
+                        'ttxly' => $value['ttxly'],
                         'dgia' => '',
                         'dvtinh' => '',
                         'sluong' => '',
+                        'stckhau' => 0,
+                        'tchat' => '',
                         'ten' => '',
                         'thtien' => '',
+                        'tsuat' => 0,
                     ));
                 }
-            }    //code...
+            }
         } catch (\Throwable $th) {
-            return redirect()->route('admin.company')->withErrors(['error' => 'Kết nối với TCT thất bại']);
+            return redirect()->route('admin.company')->withErrors(['error' => 'Kết nối với TCT thất bại.']);
         }
 
         return view('admin.components.company.datainvoice', compact('company', 'invoices'));
